@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const ordersRoute = require('./routes/orders');
 const productsRoute = require('./routes/products');
-
 dotenv.config();
 app.use(cors());
 app.use(express.json());
