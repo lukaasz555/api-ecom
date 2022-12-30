@@ -21,6 +21,9 @@ mongoose
 	.then(console.log('Connected to MongoDB.'))
 	.catch((err) => console.log(err));
 
+app.get('/', (req, res) => {
+	res.send('node działa');
+});
 app.use('/orders', ordersRoute);
 app.use('/products', productsRoute);
 
