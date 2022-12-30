@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 1337;
+const PORT = 80;
 const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
@@ -9,6 +9,8 @@ const productsRoute = require('./routes/products');
 dotenv.config();
 app.use(cors());
 app.use(express.json());
+
+const MONGOURL = process.env.MONGODB;
 
 mongoose.set('strictQuery', true);
 mongoose
