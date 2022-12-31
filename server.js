@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = 80;
+const PORT = 8800;
 const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
