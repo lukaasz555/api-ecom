@@ -16,9 +16,6 @@ router.get('/', async (req, res) => {
 	}
 });
 
-// GET ORDERS BY EMAIL ADDRESS:
-// get mail i szukaj tych zamówień, gdzie mail to podany adres
-
 // NEW ORDER:
 router.post('/new', async (req, res) => {
 	const newOrder = {

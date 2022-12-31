@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = 8800;
+const PORT = 4000;
 const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
@@ -21,9 +21,6 @@ mongoose
 	.then(console.log('Connected to MongoDB.'))
 	.catch((err) => console.log(err));
 
-app.get('/', (req, res) => {
-	res.send('node działa');
-});
 app.use('/orders', ordersRoute);
 app.use('/products', productsRoute);
 
