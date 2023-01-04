@@ -46,23 +46,26 @@ router.get('/:id', async (req, res) => {
 
 // edit product:
 router.put('/edit/:id', async (req, res) => {
-	console.log(req.body);
-	try {
-		const filter = { id: req.params.id };
-		const updated = await Product.findOneAndUpdate(filter, {
-			$set: {
-				price: req.body.price,
-				discount: req.body.discount,
-				title: req.body.title,
-				authors: req.body.authors,
-				description: req.body.description,
-			},
-		}).then((res) => {
-			console.log(res);
-		});
-		res.status(200).json(updated);
-	} catch (err) {
-		console.log(err);
+	if (req.body.password === process.env.PASS) {
+		try {
+			const filter = { id: req.params.id };
+			const updated = await Product.findOneAndUpdate(filter, {
+				$set: {
+					price: req.body.price,
+					discount: req.body.discount,
+					title: req.body.title,
+					authors: req.body.authors,
+					description: req.body.description,
+				},
+			}).then((res) => {
+				console.log(res);
+			});
+			res.status(200).json(updated);
+		} catch (err) {
+			console.log(err);
+		}
+	} else {
+		res.status(401).json('wrong credentials');
 	}
 });
 
