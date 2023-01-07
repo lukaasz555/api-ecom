@@ -13,20 +13,24 @@ router.get('/', async (req, res) => {
 });
 
 // get albums category:
-router.get('/albums', async (req, res) => {
+router.get('/albums/', async (req, res) => {
 	try {
 		const albums = await Product.find({ type: 'albums' });
-		res.status(200).json(albums);
+		if (albums.length > 0) {
+			res.status(200).json(albums);
+		}
 	} catch (err) {
 		console.log(err);
 	}
 });
 
 // get books:
-router.get('/books', async (req, res) => {
+router.get('/books/', async (req, res) => {
 	try {
 		const books = await Product.find({ type: 'books' });
-		res.status(200).json(books);
+		if (books.length > 0) {
+			res.status(200).json(books);
+		}
 	} catch (err) {
 		console.log(err);
 	}
