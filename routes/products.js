@@ -42,7 +42,11 @@ router.get('/:id', async (req, res) => {
 		const prod = await Product.findOne({
 			id: req.params.id,
 		});
-		res.send(prod);
+		if (prod !== null) {
+			res.send(prod);
+		} else {
+			res.status(204).json("Product doesn't exist");
+		}
 	} catch (err) {
 		console.log(err);
 	}
