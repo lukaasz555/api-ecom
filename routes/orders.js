@@ -54,17 +54,13 @@ router.post('/new', async (req, res) => {
 
 // UPDATE STATUS:
 router.put('/:id', async (req, res) => {
-	console.log('asdf');
 	try {
 		const order = await Order.findByIdAndUpdate(req.body.id, {
 			$set: {
 				status: req.body.status,
 			},
 		});
-		// handle error - todo
-		/* 		if (!order) {
-			res.status(404);
-		} */
+		res.send(order);
 	} catch (err) {
 		console.log(err);
 	}
