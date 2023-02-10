@@ -3,8 +3,6 @@ const router = express.Router();
 const Order = require('../models/Order');
 const Customer = require('../models/Customer');
 const { v4: uuidv4 } = require('uuid');
-const data = require('../data.js');
-let orders = data;
 
 // GET ALL ORDERS:
 router.get('/', async (req, res) => {
@@ -19,7 +17,7 @@ router.get('/', async (req, res) => {
 // NEW ORDER:
 router.post('/new', async (req, res) => {
 	const newOrder = {
-		status: 'nowe',
+		status: 'new',
 		...req.body,
 	};
 	const orderModel = new Order(newOrder);
@@ -52,5 +50,23 @@ router.post('/new', async (req, res) => {
 			console.log(err);
 		}
 	});
+});
+
+// UPDATE STATUS:
+router.put('/:id', async (req, res) => {
+	console.log('asdf');
+	try {
+		const order = await Order.findByIdAndUpdate(req.body.id, {
+			$set: {
+				status: req.body.status,
+			},
+		});
+		// handle error - todo
+		/* 		if (!order) {
+			res.status(404);
+		} */
+	} catch (err) {
+		console.log(err);
+	}
 });
 module.exports = router;
