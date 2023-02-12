@@ -8,7 +8,7 @@ const { v4: uuidv4 } = require('uuid');
 router.get('/', async (req, res) => {
 	try {
 		const orders = await Order.find();
-		res.status(200).json(orders);
+		res.status(200).json(orders.sort((a, b) => b.createdAt - a.createdAt));
 	} catch (err) {
 		console.log(err);
 	}
