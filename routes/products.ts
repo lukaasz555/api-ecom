@@ -1,11 +1,13 @@
-const express = require('express');
+import express, { Request, Response } from 'express';
 const router = express.Router();
 const Product = require('../models/Product');
+import { HydratedDocument } from 'mongoose';
+import { ProductModel } from '../interfaces/ProductModel';
 
 // get all products:
-router.get('/', async (req, res) => {
+router.get('/', async (req: Request, res: Response) => {
 	try {
-		const allProducts = await Product.find();
+		const allProducts: ProductModel[] = await Product.find();
 		res.status(200).json(allProducts);
 	} catch (err) {
 		console.log(err);
@@ -13,9 +15,9 @@ router.get('/', async (req, res) => {
 });
 
 // get albums category:
-router.get('/albums/', async (req, res) => {
+router.get('/albums/', async (req: Request, res: Response) => {
 	try {
-		const albums = await Product.find({ type: 'albums' });
+		const albums: ProductModel[] = await Product.find({ type: 'albums' });
 		if (albums.length > 0) {
 			res.status(200).json(albums);
 		}
@@ -25,9 +27,9 @@ router.get('/albums/', async (req, res) => {
 });
 
 // get books:
-router.get('/books/', async (req, res) => {
+router.get('/books/', async (req: Request, res: Response) => {
 	try {
-		const books = await Product.find({ type: 'books' });
+		const books: ProductModel[] = await Product.find({ type: 'books' });
 		if (books.length > 0) {
 			res.status(200).json(books);
 		}
@@ -37,9 +39,9 @@ router.get('/books/', async (req, res) => {
 });
 
 // get product by id:
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req: Request, res: Response) => {
 	try {
-		const prod = await Product.findOne({
+		const prod: ProductModel = await Product.findOne({
 			id: req.params.id,
 		});
 		if (prod !== null) {
@@ -53,7 +55,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // edit product:
-router.put('/edit/:id', async (req, res) => {
+router.put('/edit/:id', async (req: Request, res: Response) => {
 	if (req.body.password === process.env.PASS) {
 		try {
 			const filter = { id: req.params.id };
@@ -65,7 +67,7 @@ router.put('/edit/:id', async (req, res) => {
 					authors: req.body.authors,
 					description: req.body.description,
 				},
-			}).then((res) => {
+			}).then((res: Response) => {
 				console.log(res);
 			});
 			res.status(200).json(updated);
@@ -78,9 +80,9 @@ router.put('/edit/:id', async (req, res) => {
 });
 
 // add product:
-router.post('/add', async (req, res) => {
+router.post('/add', async (req: Request, res: Response) => {
 	try {
-		const product = new Product({
+		const product: HydratedDocument<ProductModel> = new Product({
 			id: req.body.id,
 			title: req.body.title,
 			authors: req.body.authors,
@@ -97,14 +99,14 @@ router.post('/add', async (req, res) => {
 			label: req.body.label,
 			publisher: req.body.publisher,
 		});
-		const newProd = await product.save();
+		await product.save();
 	} catch (err) {
 		console.log(err);
 	}
 });
 
 // remove product:
-router.delete('/remove/:id', async (req, res) => {
+router.delete('/remove/:id', async (req: Request, res: Response) => {
 	if (req.body.password === process.env.PASS) {
 		try {
 			const product = await Product.findOne({
@@ -121,4 +123,4 @@ router.delete('/remove/:id', async (req, res) => {
 	}
 });
 
-module.exports = router;
+export default router;

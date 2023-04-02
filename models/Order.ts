@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+import { Schema, model, Types } from 'mongoose';
+import { NewOrder } from '../interfaces/NewOrderModel';
 
-const OrderSchema = new mongoose.Schema(
+const OrderSchema = new Schema<NewOrder>(
 	{
 		status: {
 			type: String,
@@ -88,4 +89,4 @@ const OrderSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-module.exports = mongoose.model('Order', OrderSchema);
+module.exports = model('Order', OrderSchema);

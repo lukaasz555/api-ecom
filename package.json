@@ -2,14 +2,15 @@
 	"name": "api",
 	"version": "1.0.0",
 	"description": "",
-	"main": "server.js",
+	"main": "server.ts",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "nodemon server.js"
+		"start": "nodemon server.ts"
 	},
 	"author": "lukaasz555",
 	"license": "ISC",
 	"dependencies": {
+		"@types/mongoose": "^5.11.97",
 		"body-parser": "^1.20.1",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.3",
@@ -18,5 +19,11 @@
 		"mongoose": "^6.8.1",
 		"nodemon": "^2.0.20",
 		"uuid": "^9.0.0"
+	},
+	"devDependencies": {
+		"@types/cors": "^2.8.13",
+		"@types/express": "^4.17.17",
+		"@types/node": "^18.15.11",
+		"typescript": "^5.0.3"
 	}
 }
