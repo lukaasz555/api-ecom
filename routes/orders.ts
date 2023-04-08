@@ -10,16 +10,27 @@ import { HydratedDocument } from 'mongoose';
 
 // GET ALL ORDERS:
 router.get('/', async (req: Request, res: Response) => {
+	console.log(req.query);
+	const page: string = req.query.page as string;
+	const limit: string = req.query.limit as string;
 	try {
-		const orders = await Order.find();
-		res
-			.status(200)
-			.json(
-				orders.sort(
-					(a: { createdAt: number }, b: { createdAt: number }) =>
-						b.createdAt - a.createdAt
-				)
-			);
+		console.log(page, limit);
+		const orders: HydratedDocument<OrderModel> = await Order.find()
+			.sort({
+				createdAt: 'desc',
+			})
+			.limit(Number(limit))
+			.skip((Number(page) - 1) * Number(limit))
+			.exec();
+
+		const count: number = await Order.count();
+		console.log('totalPages: ', Math.ceil(count / Number(limit)));
+
+		res.status(200).json({
+			orders,
+			totalPages: Math.ceil(count / Number(limit)),
+			currentPage: page,
+		});
 	} catch (err) {
 		console.log(err);
 	}
