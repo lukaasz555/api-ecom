@@ -10,9 +10,8 @@ import { HydratedDocument } from 'mongoose';
 
 // GET ALL ORDERS:
 router.get('/', async (req: Request, res: Response) => {
-	console.log(req.query);
-	const page: string = req.query.page as string;
-	const limit: string = req.query.limit as string;
+	console.log(JSON.parse(JSON.stringify(req.query.query)));
+	const { page, limit } = JSON.parse(JSON.stringify(req.query.query));
 	try {
 		console.log(page, limit);
 		const orders: HydratedDocument<OrderModel> = await Order.find()
