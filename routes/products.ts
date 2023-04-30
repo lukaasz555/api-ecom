@@ -4,11 +4,22 @@ const Product = require('../models/Product');
 import { HydratedDocument } from 'mongoose';
 import { ProductModel } from '../interfaces/ProductModel';
 
-// get all products:
+// get products:
 router.get('/', async (req: Request, res: Response) => {
+	const { page, limit } = JSON.parse(JSON.stringify(req.query.query));
 	try {
-		const allProducts: ProductModel[] = await Product.find();
-		res.status(200).json(allProducts);
+		const products: HydratedDocument<ProductModel> = await Product.find()
+			.limit(Number(limit))
+			.skip((Number(page) - 1) * Number(limit))
+			.exec();
+
+		const count: number = await Product.count();
+
+		res.status(200).json({
+			products,
+			totalPages: Math.ceil(count / Number(limit)),
+			currentPage: page,
+		});
 	} catch (err) {
 		console.log(err);
 	}

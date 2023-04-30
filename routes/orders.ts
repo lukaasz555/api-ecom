@@ -8,7 +8,7 @@ import { CustomerModel } from '../interfaces/CustomerModel';
 import { OrderModel } from '../interfaces/OrderModel';
 import { HydratedDocument } from 'mongoose';
 
-// GET ALL ORDERS:
+// GET ORDERS:
 router.get('/', async (req: Request, res: Response) => {
 	console.log(JSON.parse(JSON.stringify(req.query.query)));
 	const { page, limit } = JSON.parse(JSON.stringify(req.query.query));
