@@ -6,7 +6,7 @@ import { ProductModel } from '../interfaces/ProductModel';
 
 // get products:
 router.get('/', async (req: Request, res: Response) => {
-	const { page, limit } = JSON.parse(JSON.stringify(req.query.query));
+	const { page = 1, limit = 10 } = JSON.parse(JSON.stringify(req.query.query));
 	try {
 		const products: HydratedDocument<ProductModel> = await Product.find()
 			.limit(Number(limit))
@@ -25,13 +25,33 @@ router.get('/', async (req: Request, res: Response) => {
 	}
 });
 
-// get albums category:
-router.get('/albums/', async (req: Request, res: Response) => {
+// get exact type & category:
+router.get('/:category/:id', async (req: Request, res: Response) => {
+	const { page = 1, limit = 10, catID = 19 } = req.query;
+	console.log(req.query);
 	try {
-		const albums: ProductModel[] = await Product.find({ type: 'albums' });
-		if (albums.length > 0) {
-			res.status(200).json(albums);
-		}
+		const products: ProductModel[] = await Product.find({
+			type: req.params.category,
+			categoryID: +catID,
+		})
+			.limit(+limit)
+			.skip((+page - 1) * +limit)
+			.exec();
+
+		const count: number = await Product.find({
+			type: req.params.category,
+			categoryID: +catID,
+		}).count();
+		const respond = {
+			products,
+			totalPages: Math.ceil(count / +limit),
+			currentPage: +page,
+		};
+
+		res.status(200).json(respond);
+		// if (result.length > 0) {
+		// 	res.status(200).json(result);
+		// }
 	} catch (err) {
 		console.log(err);
 	}

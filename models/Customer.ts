@@ -1,4 +1,4 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { CustomerModel } from '../interfaces/CustomerModel';
 
 const CustomerSchema = new Schema<CustomerModel>({
@@ -17,4 +17,5 @@ const CustomerSchema = new Schema<CustomerModel>({
 	orders: Array,
 });
 
-module.exports = model('Customer', CustomerSchema);
+// module.exports = model('Customer', CustomerSchema);
+export const Customer = model('Customer', CustomerSchema);
