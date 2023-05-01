@@ -25,6 +25,19 @@ router.get('/', async (req: Request, res: Response) => {
 	}
 });
 
+// categories:
+router.get('/categories', async (req: Request, res: Response) => {
+	try {
+		const products: ProductModel[] = await Product.find({
+			type: req.query.category,
+		});
+		const categoryIDs = [...new Set(products.map((x) => x.categoryID))].sort();
+		res.status(200).json(categoryIDs);
+	} catch (e) {
+		console.log(e);
+	}
+});
+
 // get exact type & category:
 router.get('/:category/:id', async (req: Request, res: Response) => {
 	const { page = 1, limit = 10, catID = 19 } = req.query;
@@ -58,16 +71,16 @@ router.get('/:category/:id', async (req: Request, res: Response) => {
 });
 
 // get books:
-router.get('/books/', async (req: Request, res: Response) => {
-	try {
-		const books: ProductModel[] = await Product.find({ type: 'books' });
-		if (books.length > 0) {
-			res.status(200).json(books);
-		}
-	} catch (err) {
-		console.log(err);
-	}
-});
+// router.get('/books/', async (req: Request, res: Response) => {
+// 	try {
+// 		const books: ProductModel[] = await Product.find({ type: 'books' });
+// 		if (books.length > 0) {
+// 			res.status(200).json(books);
+// 		}
+// 	} catch (err) {
+// 		console.log(err);
+// 	}
+// });
 
 // get product by id:
 router.get('/:id', async (req: Request, res: Response) => {
