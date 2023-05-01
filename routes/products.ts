@@ -16,7 +16,7 @@ router.get('/', async (req: Request, res: Response) => {
 		const count: number = await Product.count();
 
 		res.status(200).json({
-			products,
+			items: products,
 			totalPages: Math.ceil(count / Number(limit)),
 			currentPage: page,
 		});
@@ -56,31 +56,15 @@ router.get('/:category/:id', async (req: Request, res: Response) => {
 			categoryID: +catID,
 		}).count();
 		const respond = {
-			products,
+			items: products,
 			totalPages: Math.ceil(count / +limit),
 			currentPage: +page,
 		};
-
 		res.status(200).json(respond);
-		// if (result.length > 0) {
-		// 	res.status(200).json(result);
-		// }
 	} catch (err) {
 		console.log(err);
 	}
 });
-
-// get books:
-// router.get('/books/', async (req: Request, res: Response) => {
-// 	try {
-// 		const books: ProductModel[] = await Product.find({ type: 'books' });
-// 		if (books.length > 0) {
-// 			res.status(200).json(books);
-// 		}
-// 	} catch (err) {
-// 		console.log(err);
-// 	}
-// });
 
 // get product by id:
 router.get('/:id', async (req: Request, res: Response) => {

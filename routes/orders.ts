@@ -26,7 +26,7 @@ router.get('/', async (req: Request, res: Response) => {
 		console.log('totalPages: ', Math.ceil(count / Number(limit)));
 
 		res.status(200).json({
-			orders,
+			items: orders,
 			totalPages: Math.ceil(count / Number(limit)),
 			currentPage: page,
 		});
