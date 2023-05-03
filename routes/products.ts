@@ -6,22 +6,23 @@ import { ProductModel } from '../interfaces/ProductModel';
 
 // get products:
 router.get('/', async (req: Request, res: Response) => {
-	const { page = 1, limit = 10 } = JSON.parse(JSON.stringify(req.query.query));
-	try {
-		const products: HydratedDocument<ProductModel> = await Product.find()
-			.limit(Number(limit))
-			.skip((Number(page) - 1) * Number(limit))
-			.exec();
+	const { page, limit } = JSON.parse(JSON.stringify(req.query.query));
+	if (page > 0 && limit > 0) {
+		try {
+			const count: number = await Product.count();
+			const products: HydratedDocument<ProductModel> = await Product.find()
+				.limit(Number(limit))
+				.skip((Number(page) - 1) * Number(limit))
+				.exec();
 
-		const count: number = await Product.count();
-
-		res.status(200).json({
-			items: products,
-			totalPages: Math.ceil(count / Number(limit)),
-			currentPage: page,
-		});
-	} catch (err) {
-		console.log(err);
+			res.status(200).json({
+				items: products,
+				totalPages: Math.ceil(count / Number(limit)),
+				currentPage: page,
+			});
+		} catch (err) {
+			console.log(err);
+		}
 	}
 });
 
