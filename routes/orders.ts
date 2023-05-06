@@ -5,8 +5,10 @@ const Customer = require('../models/Customer');
 const { v4: uuidv4 } = require('uuid');
 import { NewOrder } from '../interfaces/NewOrderModel';
 import { CustomerModel } from '../interfaces/CustomerModel';
-import { OrderModel } from '../interfaces/OrderModel';
+import { OrderModel, DbOrderModel } from '../interfaces/OrderModel';
 import { HydratedDocument } from 'mongoose';
+import moment = require('moment');
+import { getMonthlyData } from '../helpers/ChartData';
 
 // GET ORDERS:
 router.get('/', async (req: Request, res: Response) => {
@@ -31,6 +33,20 @@ router.get('/', async (req: Request, res: Response) => {
 			console.log(err);
 		}
 	}
+});
+
+router.get('/sales', async (req: Request, res: Response) => {
+	const orders: DbOrderModel[] = await Order.find({
+		createdAt: {
+			$gte: moment(new Date()).subtract(12, 'month'),
+		},
+	});
+	const monthsOfOrders = [
+		...new Set(orders.map((order) => moment(order.createdAt).format('M'))),
+	];
+
+	const chartData = monthsOfOrders.map((item) => getMonthlyData(orders, item));
+	res.status(200).json(chartData);
 });
 
 // NEW ORDER:

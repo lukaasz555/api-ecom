@@ -9,3 +9,8 @@ export interface OrderModel {
 		cost: number;
 	};
 }
+
+export interface DbOrderModel extends OrderModel {
+	createdAt: Date;
+	updatedAt: Date;
+}
