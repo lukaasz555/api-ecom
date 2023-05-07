@@ -36,16 +36,23 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 router.get('/sales', async (req: Request, res: Response) => {
+	const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+	const startMonth = Number(
+		moment(new Date()).subtract(11, 'month').format('M')
+	);
+
+	const arr = months.splice(months[startMonth - 2]);
+	const monthsOrder = arr.concat(months);
+
 	const orders: DbOrderModel[] = await Order.find({
 		createdAt: {
-			$gte: moment(new Date()).subtract(12, 'month'),
+			$gte: moment(new Date()).subtract(11, 'month'),
 		},
 	});
-	const monthsOfOrders = [
-		...new Set(orders.map((order) => moment(order.createdAt).format('M'))),
-	];
 
-	const chartData = monthsOfOrders.map((item) => getMonthlyData(orders, item));
+	const chartData = monthsOrder.map((item) =>
+		getMonthlyData(orders, String(item))
+	);
 	res.status(200).json(chartData);
 });
 
