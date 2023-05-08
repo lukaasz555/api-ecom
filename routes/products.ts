@@ -155,6 +155,7 @@ router.post('/add', async (req: Request, res: Response) => {
 			publisher: req.body.publisher,
 		});
 		await product.save();
+		res.status(200).json('success');
 	} catch (err) {
 		console.log(err);
 	}
