@@ -110,7 +110,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 // edit product:
-router.put('/edit/:id', async (req: Request, res: Response) => {
+router.put('/:id', async (req: Request, res: Response) => {
 	if (req.body.password === process.env.PASS) {
 		try {
 			const filter = { id: req.params.id };
@@ -135,7 +135,7 @@ router.put('/edit/:id', async (req: Request, res: Response) => {
 });
 
 // add product:
-router.post('/add', async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
 	try {
 		const product: HydratedDocument<ProductModel> = new Product({
 			id: req.body.id,
@@ -162,7 +162,7 @@ router.post('/add', async (req: Request, res: Response) => {
 });
 
 // remove product:
-router.delete('/remove/:id', async (req: Request, res: Response) => {
+router.delete('/:id', async (req: Request, res: Response) => {
 	if (req.body.password === process.env.PASS) {
 		try {
 			const product = await Product.findOne({
