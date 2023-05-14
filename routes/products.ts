@@ -179,4 +179,22 @@ router.delete('/:id', async (req: Request, res: Response) => {
 	}
 });
 
+// search result:
+router.get('/search', async (req: Request, res: Response) => {
+	const { key, value } = JSON.parse(JSON.stringify(req.query.params));
+	try {
+		const products: ProductModel[] = await Product.find({
+			[key]: value,
+		});
+		if (products.length > 0) {
+			// console.log(products.map((x) => x.title));
+			res.status(200).json(products);
+		} else if (products.length === 0) {
+			res.status(204).json('no products');
+		}
+	} catch (err) {
+		console.log(err);
+	}
+});
+
 export default router;
