@@ -1,4 +1,5 @@
 import { OrderModel } from './OrderModel';
+import { ProductModel } from './ProductModel';
 
 export interface NewOrder {
 	status: string;
@@ -21,5 +22,13 @@ export interface NewOrder {
 			country: string;
 		};
 	};
-	order: OrderModel;
+	order: {
+		items: ProductModel[];
+		qty: number;
+		value: number;
+		ship: {
+			inpost: string;
+			cost: number;
+		};
+	};
 }

@@ -1,7 +1,8 @@
 import express, { Application, Request, Response } from 'express';
 const router = express.Router();
 const Order = require('../models/Order');
-const Customer = require('../models/Customer');
+// const Customer = require('../models/Customer');
+import { Customer } from '../models/Customer';
 const { v4: uuidv4 } = require('uuid');
 import { NewOrder } from '../interfaces/NewOrderModel';
 import { CustomerModel } from '../interfaces/CustomerModel';
@@ -57,7 +58,9 @@ router.get('/sales', async (req: Request, res: Response) => {
 });
 
 // NEW ORDER:
-router.post('/new', async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
+	console.log('REQUEST');
+	console.log(req.body);
 	const newOrder: NewOrder = {
 		status: 'new',
 		...req.body,
