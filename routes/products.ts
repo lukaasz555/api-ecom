@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express';
 const router = express.Router();
 const Product = require('../models/Product');
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, mongo } from 'mongoose';
 import { ProductModel } from '../interfaces/ProductModel';
+import mongoose from 'mongoose';
 
 // get products:
 router.get('/', async (req: Request, res: Response) => {
@@ -28,18 +29,63 @@ router.get('/', async (req: Request, res: Response) => {
 
 // search result:
 router.get('/search', async (req: Request, res: Response) => {
-	const { key, value } = JSON.parse(JSON.stringify(req.query.params));
-	try {
-		const products: ProductModel[] = await Product.find({
-			[key]: value,
-		});
-		if (products.length > 0) {
-			res.status(200).json(products);
-		} else if (products.length === 0) {
-			res.status(204).json('no products');
+	const {
+		key,
+		value,
+		type = '',
+		searchPhrase,
+	} = JSON.parse(JSON.stringify(req.query.params));
+	if (!key && type === 'text' && searchPhrase.trim() !== '') {
+		const { searchPhrase } = JSON.parse(JSON.stringify(req.query.params));
+		console.log(searchPhrase);
+		const collection = mongoose.connection.collection('products');
+		const res = await collection
+			.aggregate([
+				{
+					$search: {
+						index: 'products',
+						compound: {
+							should: [
+								{
+									autocomplete: {
+										query: `${searchPhrase}`,
+										path: 'title',
+										fuzzy: {
+											maxEdits: 2,
+											prefixLength: 3,
+										},
+									},
+								},
+								{
+									autocomplete: {
+										query: `${searchPhrase}`,
+										path: 'authors',
+										fuzzy: {
+											maxEdits: 2,
+											prefixLength: 3,
+										},
+									},
+								},
+							],
+						},
+					},
+				},
+			])
+			.toArray();
+		console.log(res.map((r) => r.title));
+	} else {
+		try {
+			const products: ProductModel[] = await Product.find({
+				[key]: value,
+			});
+			if (products.length > 0) {
+				res.status(200).json(products);
+			} else if (products.length === 0) {
+				res.status(204).json('no products');
+			}
+		} catch (err) {
+			console.log(err);
 		}
-	} catch (err) {
-		console.log(err);
 	}
 });
 
