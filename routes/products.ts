@@ -39,7 +39,7 @@ router.get('/search', async (req: Request, res: Response) => {
 		const { searchPhrase } = JSON.parse(JSON.stringify(req.query.params));
 		console.log(searchPhrase);
 		const collection = mongoose.connection.collection('products');
-		const res = await collection
+		const searchResults = await collection
 			.aggregate([
 				{
 					$search: {
@@ -72,7 +72,7 @@ router.get('/search', async (req: Request, res: Response) => {
 				},
 			])
 			.toArray();
-		console.log(res.map((r) => r.title));
+		res.status(200).json(searchResults);
 	} else {
 		try {
 			const products: ProductModel[] = await Product.find({
