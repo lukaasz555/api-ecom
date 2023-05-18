@@ -105,7 +105,7 @@ router.put('/', async (req: Request, res: Response) => {
 				status: req.body.status,
 			},
 		});
-		res.send(order);
+		res.status(200).json(order);
 	} catch (err) {
 		console.log(err);
 	}

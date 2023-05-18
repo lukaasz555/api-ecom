@@ -215,7 +215,7 @@ router.post('/', async (req: Request, res: Response) => {
 			publisher: req.body.publisher,
 		});
 		await product.save();
-		res.status(200).json('success');
+		res.status(200).json(product);
 	} catch (err) {
 		console.log(err);
 	}
