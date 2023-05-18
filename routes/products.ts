@@ -37,7 +37,6 @@ router.get('/search', async (req: Request, res: Response) => {
 	} = JSON.parse(JSON.stringify(req.query.params));
 	if (!key && type === 'text' && searchPhrase.trim() !== '') {
 		const { searchPhrase } = JSON.parse(JSON.stringify(req.query.params));
-		console.log(searchPhrase);
 		const collection = mongoose.connection.collection('products');
 		const searchResults = await collection
 			.aggregate([
@@ -173,10 +172,10 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 // edit product:
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/', async (req: Request, res: Response) => {
 	if (req.body.password === process.env.PASS) {
 		try {
-			const filter = { id: req.params.id };
+			const filter = { id: req.body.id };
 			const updated = await Product.findOneAndUpdate(filter, {
 				$set: {
 					price: req.body.price,
@@ -185,8 +184,6 @@ router.put('/:id', async (req: Request, res: Response) => {
 					authors: req.body.authors,
 					description: req.body.description,
 				},
-			}).then((res: Response) => {
-				console.log(res);
 			});
 			res.status(200).json(updated);
 		} catch (err) {
@@ -225,11 +222,11 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // remove product:
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/', async (req: Request, res: Response) => {
 	if (req.body.password === process.env.PASS) {
 		try {
 			const product = await Product.findOne({
-				id: req.params.id,
+				id: req.body.id,
 			})
 				.deleteOne()
 				.exec();

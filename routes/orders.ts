@@ -98,7 +98,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // UPDATE STATUS:
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/', async (req: Request, res: Response) => {
 	try {
 		const order: OrderModel = await Order.findByIdAndUpdate(req.body.id, {
 			$set: {
