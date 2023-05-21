@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 const router = express.Router();
-const Product = require('../models/Product');
+const Product = require('../schemas/Product');
 import { HydratedDocument, mongo } from 'mongoose';
 import { ProductModel } from '../interfaces/ProductModel';
 import mongoose from 'mongoose';

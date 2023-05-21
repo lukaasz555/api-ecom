@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from 'express';
 const router = express.Router();
-const Order = require('../models/Order');
+const Order = require('../schemas/Order');
 import { Customer } from '../schemas/Customer';
 const { v4: uuidv4 } = require('uuid');
 import { NewOrder } from '../interfaces/NewOrderModel';
