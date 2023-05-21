@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import ordersRoute from './routes/orders';
 import productsRoute from './routes/products';
 import contactRoute from './routes/contact';
+import userRoute from './routes/user';
 
 const dotenv = require('dotenv');
 const app: Application = express();
@@ -25,6 +26,7 @@ async function run() {
 
 app.use('/orders', ordersRoute);
 app.use('/products', productsRoute);
+app.use('/user', userRoute);
 app.use('/contact', contactRoute);
 
 app.listen(PORT, () => {
