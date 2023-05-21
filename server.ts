@@ -3,6 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import ordersRoute from './routes/orders';
 import productsRoute from './routes/products';
+import contactRoute from './routes/contact';
 
 const dotenv = require('dotenv');
 const app: Application = express();
@@ -24,6 +25,7 @@ async function run() {
 
 app.use('/orders', ordersRoute);
 app.use('/products', productsRoute);
+app.use('/contact', contactRoute);
 
 app.listen(PORT, () => {
 	console.log('Running on port', PORT);
