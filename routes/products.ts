@@ -7,8 +7,8 @@ import mongoose from 'mongoose';
 
 // get products:
 router.get('/', async (req: Request, res: Response) => {
-	const { page, limit } = JSON.parse(JSON.stringify(req.query.query));
-	if (page > 0 && limit > 0) {
+	const { page, limit } = req.query;
+	if (page && limit) {
 		try {
 			const count: number = await Product.count();
 			const products: HydratedDocument<ProductModel> = await Product.find()
@@ -26,17 +26,10 @@ router.get('/', async (req: Request, res: Response) => {
 		}
 	}
 });
-
 // search result:
 router.get('/search', async (req: Request, res: Response) => {
-	const {
-		key,
-		value,
-		type = '',
-		searchPhrase,
-	} = JSON.parse(JSON.stringify(req.query.params));
-	if (!key && type === 'text' && searchPhrase.trim() !== '') {
-		const { searchPhrase } = JSON.parse(JSON.stringify(req.query.params));
+	const { key, value, type = '', searchPhrase } = req.query;
+	if (!key && type === 'text' && searchPhrase) {
 		const collection = mongoose.connection.collection('products');
 		const searchResults = await collection
 			.aggregate([
@@ -75,7 +68,7 @@ router.get('/search', async (req: Request, res: Response) => {
 	} else {
 		try {
 			const products: ProductModel[] = await Product.find({
-				[key]: value,
+				[String(key)]: value,
 			});
 			if (products.length > 0) {
 				res.status(200).json(products);
