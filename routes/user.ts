@@ -28,4 +28,20 @@ router.post('/register', async (req: Request, res: Response) => {
 	}
 });
 
+router.post('/login', async (req: Request, res: Response) => {
+	const currentUser: HydratedDocument<User> = await UserSchema.findOne({
+		email: req.body.email,
+	});
+	if (currentUser) {
+		if (currentUser.password === req.body.password) {
+			console.log('dane ok');
+			res.status(200).json(currentUser);
+		} else {
+			res.status(401).json('Wrong credentials');
+		}
+	} else {
+		res.status(404).json('No such a user exists');
+	}
+});
+
 export default router;
