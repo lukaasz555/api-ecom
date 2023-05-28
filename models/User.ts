@@ -7,6 +7,7 @@ export class User {
 	orders: DbOrderModel[] = [];
 	name = '';
 	lastname = '';
+	role = '';
 
 	constructor(user: User) {
 		this.id = user.id;
@@ -15,5 +16,6 @@ export class User {
 		this.orders = user.orders;
 		this.name = user.name;
 		this.lastname = user.lastname;
+		this.role = user.role;
 	}
 }

@@ -27,6 +27,10 @@ const UserSchema = new Schema<User>(
 			type: String,
 			required: true,
 		},
+		role: {
+			type: String,
+			required: true,
+		},
 		orders: Array,
 	},
 	{ timestamps: true }
