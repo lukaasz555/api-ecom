@@ -18,12 +18,13 @@ router.post('/register', async (req: Request, res: Response) => {
 			...req.body,
 			id: usersCount + 1,
 		});
-		console.log(user);
+
 		const newUser: HydratedDocument<User> = new UserSchema(user);
 		try {
 			newUser.save().then((x) => res.status(200).json(x));
 		} catch (e) {
 			console.log(e);
+			res.status(500).json('Server error');
 		}
 	}
 });
@@ -34,7 +35,6 @@ router.post('/login', async (req: Request, res: Response) => {
 	});
 	if (currentUser) {
 		if (currentUser.password === req.body.password) {
-			console.log('dane ok');
 			res.status(200).json(currentUser);
 		} else {
 			res.status(401).json('Wrong credentials');
