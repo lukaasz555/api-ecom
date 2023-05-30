@@ -9,6 +9,9 @@ const OrderSchema = new Schema<NewOrder>(
 		},
 
 		customer: {
+			customerId: {
+				type: String,
+			},
 			customerData: {
 				name: {
 					type: String,

@@ -35,6 +35,20 @@ router.get('/', async (req: Request, res: Response) => {
 	}
 });
 
+// GET ORDERS BY CUSTOMERID:
+router.get('/:id', async (req: Request, res: Response) => {
+	try {
+		const orders = await Order.find({
+			'customer.customerId': req.params.id,
+		})
+			.limit(10)
+			.sort({ createdAt: 'desc' });
+		res.status(200).json(orders);
+	} catch (e) {
+		res.status(500).json('Server error');
+	}
+});
+
 router.get('/sales', async (req: Request, res: Response) => {
 	const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 	const startMonth = Number(

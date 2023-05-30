@@ -4,6 +4,7 @@ import { ProductModel } from './ProductModel';
 export interface NewOrder {
 	status: string;
 	customer: {
+		customerId: string;
 		customerData: {
 			name: string;
 			lastname: string;
