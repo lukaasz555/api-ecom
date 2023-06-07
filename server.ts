@@ -5,6 +5,7 @@ import ordersRoute from './routes/orders';
 import productsRoute from './routes/products';
 import contactRoute from './routes/contact';
 import authRoute from './routes/auth';
+import userRoute from './routes/user';
 
 const dotenv = require('dotenv');
 const app: Application = express();
@@ -28,6 +29,7 @@ app.use('/orders', ordersRoute);
 app.use('/products', productsRoute);
 app.use('/auth', authRoute);
 app.use('/contact', contactRoute);
+app.use('/user', userRoute);
 
 app.listen(PORT, () => {
 	console.log('Running on port', PORT);
