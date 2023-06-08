@@ -9,7 +9,8 @@ router.put('/', async (req: Request, res: Response) => {
 	try {
 		const user: HydratedDocument<User> = await UserSchema.findByIdAndUpdate(
 			req.body.user._id,
-			{ $set: req.body.user }
+			{ $set: req.body.user },
+			{ new: true }
 		);
 		res.status(200).json(user);
 	} catch (e) {
