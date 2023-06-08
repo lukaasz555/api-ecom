@@ -5,9 +5,13 @@ const UserSchema = require('../schemas/UserSchema');
 
 const router = express.Router();
 
-router.get('/', async (req: Request, res: Response) => {
+router.put('/', async (req: Request, res: Response) => {
 	try {
-		res.status(200).json('ok');
+		const user: HydratedDocument<User> = await UserSchema.findByIdAndUpdate(
+			req.body.user._id,
+			{ $set: req.body.user }
+		);
+		res.status(200).json(user);
 	} catch (e) {
 		console.log(e);
 	}
