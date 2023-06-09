@@ -1,31 +1,39 @@
 import express, { Request, Response } from 'express';
 const router = express.Router();
 const Product = require('../schemas/Product');
+const {
+	getProducts,
+	findProductById,
+} = require('../controllers/products/findProductById');
 import { HydratedDocument, mongo } from 'mongoose';
 import { ProductModel } from '../interfaces/ProductModel';
 import mongoose from 'mongoose';
 
-// get products:
-router.get('/', async (req: Request, res: Response) => {
-	const { page, limit } = req.query;
-	if (page && limit) {
-		try {
-			const count: number = await Product.count();
-			const products: HydratedDocument<ProductModel> = await Product.find()
-				.limit(Number(limit))
-				.skip((Number(page) - 1) * Number(limit))
-				.exec();
+router.route('/').get(getProducts);
+router.route('/:id').get(findProductById);
 
-			res.status(200).json({
-				items: products,
-				totalPages: Math.ceil(count / Number(limit)),
-				currentPage: page,
-			});
-		} catch (err) {
-			console.log(err);
-		}
-	}
-});
+// get products:
+// router.get('/', async (req: Request, res: Response) => {
+// 	const { page, limit } = req.query;
+// 	if (page && limit) {
+// 		try {
+// 			const count: number = await Product.count();
+// 			const products: HydratedDocument<ProductModel> = await Product.find()
+// 				.limit(Number(limit))
+// 				.skip((Number(page) - 1) * Number(limit))
+// 				.exec();
+
+// 			res.status(200).json({
+// 				items: products,
+// 				totalPages: Math.ceil(count / Number(limit)),
+// 				currentPage: page,
+// 			});
+// 		} catch (err) {
+// 			console.log(err);
+// 		}
+// 	}
+// });
+
 // search result:
 router.get('/search', async (req: Request, res: Response) => {
 	const { key, value, type = '', searchPhrase } = req.query;
@@ -145,22 +153,6 @@ router.get('/:category/:id', async (req: Request, res: Response) => {
 		} catch (err) {
 			console.log(err);
 		}
-	}
-});
-
-// get product by id:
-router.get('/:id', async (req: Request, res: Response) => {
-	try {
-		const prod: ProductModel = await Product.findOne({
-			id: req.params.id,
-		});
-		if (prod !== null) {
-			res.send(prod);
-		} else {
-			res.status(204).json("Product doesn't exist");
-		}
-	} catch (err) {
-		console.log(err);
 	}
 });
 
