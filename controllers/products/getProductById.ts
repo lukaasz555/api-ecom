@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 const Product = require('../../schemas/Product');
 import { ProductModel } from '../../interfaces/ProductModel';
 
-exports.findProductById = async (
+exports.getProductById = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
