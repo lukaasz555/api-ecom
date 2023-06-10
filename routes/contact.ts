@@ -5,6 +5,7 @@ import { ContactMessageModel } from '../interfaces/ContactMessageModel';
 
 const router = express.Router();
 
+// just temporary
 router.post('/', async (req: Request, res: Response) => {
 	const msg: HydratedDocument<ContactMessageModel> = new ContactMessage(
 		req.body
