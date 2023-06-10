@@ -1,38 +1,16 @@
 import express, { Request, Response } from 'express';
-const router = express.Router();
-const Product = require('../schemas/Product');
-const {
-	getProducts,
-	findProductById,
-} = require('../controllers/products/findProductById');
 import { HydratedDocument, mongo } from 'mongoose';
 import { ProductModel } from '../interfaces/ProductModel';
 import mongoose from 'mongoose';
+const Product = require('../schemas/Product');
+const { findProductById } = require('../controllers/products/findProductById');
+const { getProducts } = require('../controllers/products/getProducts');
+const { getCategories } = require('../controllers/products/getCategories');
+const router = express.Router();
 
-router.route('/').get(getProducts);
+router.route('/categories').get(getCategories);
 router.route('/:id').get(findProductById);
-
-// get products:
-// router.get('/', async (req: Request, res: Response) => {
-// 	const { page, limit } = req.query;
-// 	if (page && limit) {
-// 		try {
-// 			const count: number = await Product.count();
-// 			const products: HydratedDocument<ProductModel> = await Product.find()
-// 				.limit(Number(limit))
-// 				.skip((Number(page) - 1) * Number(limit))
-// 				.exec();
-
-// 			res.status(200).json({
-// 				items: products,
-// 				totalPages: Math.ceil(count / Number(limit)),
-// 				currentPage: page,
-// 			});
-// 		} catch (err) {
-// 			console.log(err);
-// 		}
-// 	}
-// });
+router.route('/').get(getProducts);
 
 // search result:
 router.get('/search', async (req: Request, res: Response) => {
@@ -86,22 +64,6 @@ router.get('/search', async (req: Request, res: Response) => {
 		} catch (err) {
 			console.log(err);
 		}
-	}
-});
-
-// categories:
-router.get('/categories', async (req: Request, res: Response) => {
-	try {
-		const products: ProductModel[] = await Product.find({
-			type: req.query.category,
-		});
-		const categoryIDs = [
-			...new Set(products.map((x) => x.categoryID)),
-			99,
-		].sort();
-		res.status(200).json(categoryIDs);
-	} catch (e) {
-		console.log(e);
 	}
 });
 
