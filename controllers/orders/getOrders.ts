@@ -4,7 +4,6 @@ import { HydratedDocument } from 'mongoose';
 const Order = require('../../schemas/Order');
 
 exports.getOrders = async (req: Request, res: Response, next: NextFunction) => {
-	console.log(req.query);
 	const { page, limit } = req.query;
 	if (page && limit) {
 		try {
