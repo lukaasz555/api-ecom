@@ -10,65 +10,15 @@ import { HydratedDocument } from 'mongoose';
 import moment from 'moment';
 import { getMonthlyData } from '../helpers/ChartData';
 
-// GET ORDERS:
-router.get('/', async (req: Request, res: Response) => {
-	const { page, limit } = JSON.parse(JSON.stringify(req.query.query));
-	if (page > 0 && limit > 0) {
-		try {
-			const count: number = await Order.count();
-			const orders: HydratedDocument<OrderModel> = await Order.find()
-				.sort({
-					createdAt: 'desc',
-				})
-				.limit(Number(limit))
-				.skip((Number(page) - 1) * Number(limit))
-				.exec();
+const { getOrders } = require('../controllers/orders/getOrders');
+const {
+	getOrdersByCustomerId,
+} = require('../controllers/orders/getOrdersByCustomerId');
+const { getSalesData } = require('../controllers/orders/getSalesData');
 
-			res.status(200).json({
-				items: orders,
-				totalPages: Math.ceil(count / Number(limit)),
-				currentPage: page,
-			});
-		} catch (err) {
-			console.log(err);
-		}
-	}
-});
-
-// GET ORDERS BY CUSTOMERID:
-router.get('/:id', async (req: Request, res: Response) => {
-	try {
-		const orders = await Order.find({
-			'customer.customerId': req.params.id,
-		})
-			.limit(10)
-			.sort({ createdAt: 'desc' });
-		res.status(200).json(orders);
-	} catch (e) {
-		res.status(500).json('Server error');
-	}
-});
-
-router.get('/sales', async (req: Request, res: Response) => {
-	const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-	const startMonth = Number(
-		moment(new Date()).subtract(11, 'month').format('M')
-	);
-
-	const arr = months.splice(months[startMonth - 2]);
-	const monthsOrder = arr.concat(months);
-
-	const orders: DbOrderModel[] = await Order.find({
-		createdAt: {
-			$gte: moment(new Date()).subtract(11, 'month'),
-		},
-	});
-
-	const chartData = monthsOrder.map((item) =>
-		getMonthlyData(orders, String(item))
-	);
-	res.status(200).json(chartData);
-});
+router.route('/sales').get(getSalesData);
+router.route('/:customerId').get(getOrdersByCustomerId);
+router.route('/').get(getOrders);
 
 // NEW ORDER:
 router.post('/', async (req: Request, res: Response) => {
