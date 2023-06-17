@@ -1,9 +1,11 @@
 import { OrderModel } from './OrderModel';
 import { ProductModel } from './ProductModel';
+import { OrderStatusesEnum } from '../enums/OrderStatusesEnum';
 
 export interface NewOrder {
-	status: string;
+	status: OrderStatusesEnum;
 	customer: {
+		customerId: string;
 		customerData: {
 			name: string;
 			lastname: string;

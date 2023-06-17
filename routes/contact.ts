@@ -1,10 +1,11 @@
 import express, { Request, Response } from 'express';
 import { HydratedDocument } from 'mongoose';
-import { ContactMessage } from '../models/ContactMessage';
+import { ContactMessage } from '../schemas/ContactMessage';
 import { ContactMessageModel } from '../interfaces/ContactMessageModel';
 
 const router = express.Router();
 
+// just temporary
 router.post('/', async (req: Request, res: Response) => {
 	const msg: HydratedDocument<ContactMessageModel> = new ContactMessage(
 		req.body
