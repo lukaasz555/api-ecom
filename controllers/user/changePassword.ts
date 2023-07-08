@@ -2,7 +2,6 @@ import { Response } from 'express';
 import { UserAuthenticatedReq } from '../../interfaces/UserAuthenticatedReq';
 import { User } from '../../models/User';
 import { HydratedDocument } from 'mongoose';
-import jwt from 'jsonwebtoken';
 import { validatePassword, getHashedPassword } from '../../helpers/bcryptAuth';
 import { getUserToken } from '../../helpers/getUserToken';
 const UserSchema = require('../../schemas/UserSchema');
