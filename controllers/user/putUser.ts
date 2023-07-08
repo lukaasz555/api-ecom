@@ -3,8 +3,8 @@ import { UserAuthenticatedReq } from '../../interfaces/UserAuthenticatedReq';
 import { User } from '../../models/User';
 import { HydratedDocument } from 'mongoose';
 import { validatePassword, getHashedPassword } from '../../helpers/bcryptAuth';
-const UserSchema = require('../../schemas/UserSchema');
 import { getUserToken } from '../../helpers/getUserToken';
+const UserSchema = require('../../schemas/UserSchema');
 
 exports.putUser = async (req: UserAuthenticatedReq, res: Response) => {
 	const currentUser: HydratedDocument<User> = await UserSchema.findOne({
@@ -18,14 +18,13 @@ exports.putUser = async (req: UserAuthenticatedReq, res: Response) => {
 
 	if (isPasswordValid) {
 		const { password, ...toUpdate } = req.body.user;
-
 		const updatedUser = await UserSchema.findOneAndUpdate(
 			{ email: req.body.user.email },
 			{ $set: toUpdate },
 			{ new: true }
 		);
 
-		const token = getUserToken(currentUser);
+		const token = getUserToken(updatedUser);
 		res.status(200).json(token);
 	} else {
 		res.status(403).json('Forbidden');
