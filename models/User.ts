@@ -2,6 +2,7 @@ import { DbOrderModel } from '../interfaces/OrderModel';
 
 export class User {
 	id = '';
+	_id? = '';
 	email = '';
 	password = '';
 	orders: DbOrderModel[] = [];
