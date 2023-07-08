@@ -8,7 +8,7 @@ exports.getOrdersByCustomerId = async (
 	res: Response
 ) => {
 	// TAKE NOTE that there is a limit up to 10 orders - it's temporary
-	if (req.user && req.user.role === UserRolesEnum.Admin) {
+	if (req.user && req.user.role !== UserRolesEnum.Guest) {
 		try {
 			const orders = await Order.find({
 				'customer.customerId': req.params.customerId,
