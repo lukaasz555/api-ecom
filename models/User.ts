@@ -1,14 +1,15 @@
 import { DbOrderModel } from '../interfaces/OrderModel';
+import { UserRolesEnum } from '../enums/UserRolesEnum';
 
 export class User {
 	id = '';
-	_id? = '';
+	_id?: string;
 	email = '';
 	password = '';
 	orders: DbOrderModel[] = [];
 	name = '';
 	lastname = '';
-	role = '';
+	role: UserRolesEnum;
 
 	constructor(user: User) {
 		this.id = user.id;
