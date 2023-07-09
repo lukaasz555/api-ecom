@@ -16,7 +16,7 @@ exports.register = async (req: Request, res: Response, next: NextFunction) => {
 		const usersCount = await UserSchema.count();
 		const user: User = new User({
 			...req.body,
-			id: usersCount + 1,
+			id: String(usersCount + 1),
 			password: hashedPassword,
 		});
 
