@@ -19,7 +19,7 @@ mongoose.set('strictQuery', true);
 
 app.get('/hello', (req: Request, res: Response) => {
 	res.json({
-		message: 'test vercel',
+		message: 'test vercel - hello world',
 		date: String(new Date()).substring(0, 10),
 	});
 });
